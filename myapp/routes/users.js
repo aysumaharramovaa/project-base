@@ -4,11 +4,17 @@ var router = express.Router();
 const User = require('../models/User');
 
 /* GET users listing. */
-router.get('/:id', async function(req, res, next) {
+router.get('/', async function(req, res, next) {
   try {
-    const user = await User.findById(req.params.id);
+    const filter = {};
 
-    res.json(user);
+    if (req.query.city) {
+      filter.city = req.query.city;
+    }
+
+    const users = await User.find(filter);
+
+    res.json(users);
   } catch (error) {
     next(error);
   }
